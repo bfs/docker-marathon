@@ -1,6 +1,4 @@
-FROM boritzio/docker-mesos-master
-
-RUN apt-get update && apt-get -y install marathon 
+FROM boritzio/docker-mesosphere-base
 
 ADD start_marathon.sh /usr/sbin/marathon
 
