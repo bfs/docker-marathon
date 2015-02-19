@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#defaults
+MARATHON_HOSTNAME=${MARATHON_HOSTNAME:-"localhost"}
+MARATHON_MASTER=${MARATHON_MASTER:-"zk://localhost:2181/mesos"}
+MARATHON_ZK=${MARATHON_ZK:-"zk://localhost:2181/marathon"}
+
 /usr/bin/java -Xmx512m \
 -Djava.library.path=/usr/local/lib:/usr/lib:/usr/lib64 \
 -Djava.util.logging.SimpleFormatter.format=%2$s%5$s%6$s%n \

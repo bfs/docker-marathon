@@ -1,7 +1,7 @@
 FROM boritzio/docker-mesosphere-base
 
-ADD start_marathon.sh /usr/sbin/marathon
+RUN apt-get install -y marathon
 
 EXPOSE 8080
 
-ENTRYPOINT /usr/sbin/marathon
+ADD start_marathon.sh /etc/my_init.d/marathon.sh
