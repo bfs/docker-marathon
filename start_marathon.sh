@@ -7,6 +7,10 @@ MARATHON_HTTP_PORT=${MARATHON_HTTP_PORT:-${PORT:-8080}}
 MARATHON_MASTER=${MARATHON_MASTER:-"zk://localhost:2181/mesos"}
 MARATHON_ZK=${MARATHON_ZK:-"zk://localhost:2181/marathon"}
 
+echo "-------Marathon Host ENV Variables-------"
+env
+echo "----end Marathon Host ENV Variables----"
+
 
 /usr/bin/java -Xmx512m \
 -Djava.library.path=/usr/local/lib:/usr/lib:/usr/lib64 \
