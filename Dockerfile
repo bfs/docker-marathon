@@ -1,6 +1,6 @@
 FROM boritzio/docker-mesosphere-base
 
-RUN apt-get install -y marathon
+RUN apt-get update; apt-get install -y marathon
 
 EXPOSE 8080
 
