@@ -10,8 +10,15 @@ CONF_FILE=/etc/default/marathon
 export MESOS_NATIVE_JAVA_LIBRARY=/usr/lib/libmesos.so
 export MESOS_NATIVE_LIBRARY=$MESOS_NATIVE_JAVA_LIBRARY
 
-
-echo "MESOS_NATIVE_LIBRARY, MESOS_NATIVE_JAVA_LIBRARY set to '$MESOS_NATIVE_JAVA_LIBRARY'"
+#prepare authentication secret file if the secret is passed in via env
+if [[ -n "$MARATHON_MESOS_AUTHENTICATION_SECRET" ]]; then
+  secret_path=/secret_from_env
+  echo "Converting auth secret to file"
+  echo -n "$MARATHON_MESOS_AUTHENTICATION_SECRET" > $secret_path
+  chmod 600 $secret_path
+  unset MARATHON_MESOS_AUTHENTICATION_SECRET
+  export MARATHON_MESOS_AUTHENTICATION_SECRET_FILE=$secret_path
+fi
 
 # Read environment variables from config file
 set -o allexport
