@@ -4,8 +4,10 @@ set -o errexit -o pipefail
 declare -a java_args
 declare -a app_args
 FRAMEWORK_HOME=`dirname $0`/..
-CONF_FILE=/etc/default/marathon
 
+
+export MARATHON_MASTER=${MARATHON_MASTER:-"zk://localhost:2181/mesos"}
+export MARATHON_ZK=${MARATHON_ZK:-"zk://localhost:2181/marathon"}
 
 export MESOS_NATIVE_JAVA_LIBRARY=/usr/lib/libmesos.so
 export MESOS_NATIVE_LIBRARY=$MESOS_NATIVE_JAVA_LIBRARY
@@ -20,10 +22,6 @@ if [[ -n "$MARATHON_MESOS_AUTHENTICATION_SECRET" ]]; then
   export MARATHON_MESOS_AUTHENTICATION_SECRET_FILE=$secret_path
 fi
 
-# Read environment variables from config file
-set -o allexport
-[[ ! -f "$CONF_FILE" ]] || . "$CONF_FILE"
-set +o allexport
 
 addJava() { java_args=( "${java_args[@]}" "$1" ); }
 addApplication() { app_args=( "${app_args[@]}" "$1" ); }
@@ -44,7 +42,10 @@ require_arg() {
   fi
 }
 
+
 # Filter out MARATHON_APP* env variables. All MARATHON_XXX=yyy variables are interpreted as -xxx yyy application parameter
+echo `env | grep -v ^MARATHON_APP | grep ^MARATHON_ | awk '{gsub(/MARATHON_/,""); gsub(/=/," "); printf("%s%s ", "--", tolower($1)); for(i=2;i<=NF;i++){printf("%s ", $i)}}'`
+
 for env_op in `env | grep -v ^MARATHON_APP | grep ^MARATHON_ | awk '{gsub(/MARATHON_/,""); gsub(/=/," "); printf("%s%s ", "--", tolower($1)); for(i=2;i<=NF;i++){printf("%s ", $i)}}'`; do
   addApplication "$env_op"
 done

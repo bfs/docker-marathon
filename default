@@ -1,2 +1,0 @@
-MARATHON_MASTER="zk://localhost:2181/mesos"
-MARATHON_ZK="zk://localhost:2181/marathon"
